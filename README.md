@@ -91,6 +91,8 @@ Only ≈ 3.5% of transactions are fraud, so a model that says "not fraud" every 
 
 <img src="./img/Screenshot at Nov 24 11-15-22.png" width="85%" alt="Preview of the Fraud Detection page" />
 
+<p align="center"><b>🔗 <a href="https://fraud-radar.vercel.app">Live demo</a></b> · Demo account: <code>analyst@fraudradar.dev</code> / <code>analyst1234</code></p>
+
 ```text
 Fraud Radar
 │
@@ -200,8 +202,7 @@ fraud-radar-ml/
 - [x] Backend scoring API
 - [x] Platform with users, roles, dashboard and alert queue
 - [x] English / Spanish interface
-- [ ] Screenshots and demo
-- [ ] Online deployment (Vercel + Render)
+- [x] Online deployment (Vercel + Render)
 
 ---
 
@@ -210,6 +211,14 @@ fraud-radar-ml/
 Originally developed as the final project for the **Machine Learning** course, M.Sc. in Information Technologies for Data Analytics, Universidad de San Buenaventura Cali. Redesigned as a fraud detection case study, inspired by my experience testing payment and money transfer platforms as a QA Analyst.
 
 **Data:** IEEE-CIS Fraud Detection, provided by Vesta Corporation via Kaggle. Used for educational, non-commercial purposes.
+
+---
+
+> [!NOTE]
+> **Project status: Completed ✅**
+> This repository is finished and is no longer being updated. All projects were last verified to work correctly as of **November 24, 2026**. Later changes to browsers, libraries or dependencies may affect how some projects run.
+
+---
 
 <div align="center">
 
