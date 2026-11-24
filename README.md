@@ -89,6 +89,8 @@ Only ≈ 3.5% of transactions are fraud, so a model that says "not fraud" every 
 
 ## 🖥️ Web platform
 
+<img src="./img/Screenshot at Nov 24 11-15-22.png" width="85%" alt="Preview of the storytelling page" />
+
 ```text
 Fraud Radar
 │
