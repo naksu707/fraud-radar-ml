@@ -6,10 +6,11 @@ const frontendDir = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Build paths start at /frontend (the repo folder name has spaces, which Vercel does not allow)
   outputFileTracingRoot: frontendDir,
-  // "standalone" is only needed for the Docker image; Vercel builds its own way
-  ...(process.env.VERCEL ? {} : { output: "standalone" }),
+  // On Vercel: plain static site (every page is static, the data comes from the API on Render).
+  // Elsewhere (Docker): standalone Node server.
+  output: process.env.VERCEL ? "export" : "standalone",
+  trailingSlash: true,
 };
 
 export default nextConfig;
