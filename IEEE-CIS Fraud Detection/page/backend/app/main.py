@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr, Field
 
 from . import handlers as h
-from .config import CORS_ORIGINS
+from .config import CORS_ORIGIN_REGEX, CORS_ORIGINS
 from .schemas import ScoreOut, TransactionIn
 from .services import ServiceError
 
@@ -18,7 +18,8 @@ app = FastAPI(
                 "Use **POST /api/auth/login** and paste the token in **Authorize** to try protected endpoints.",
     version="2.0.0",
 )
-app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_origin_regex=CORS_ORIGIN_REGEX or None,
+                   allow_methods=["*"], allow_headers=["*"])
 
 
 @app.exception_handler(ServiceError)

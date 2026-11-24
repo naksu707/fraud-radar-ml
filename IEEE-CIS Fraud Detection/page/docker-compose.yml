@@ -1,13 +1,11 @@
 # Runs the API and the platform together.
-# Before the first run, generate the demo data once (see backend/README.md):
-#   cd backend && python -m scripts.build_demo_data
+# The model (backend/model) and demo data (backend/data) are already included.
 services:
   backend:
     build: ./backend
     ports:
       - "8000:8000"
     volumes:
-      - ../model:/model:ro
       - ./backend/data:/app/data          # demo data + SQLite database (users, predictions, reviews)
     environment:
       - CORS_ORIGINS=http://localhost:3000

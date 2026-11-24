@@ -89,7 +89,7 @@ Only ≈ 3.5% of transactions are fraud, so a model that says "not fraud" every 
 
 ## 🖥️ Web platform
 
-<img src="./img/Screenshot at Nov 24 11-15-22.png" width="85%" alt="Preview of the storytelling page" />
+<img src="./img/Screenshot at Nov 24 11-15-22.png" width="85%" alt="Preview of the Fraud Detection page" />
 
 ```text
 Fraud Radar
@@ -137,6 +137,8 @@ pip install -r requirements.txt
 
 Run `notebook/01_eda.ipynb` and then `notebook/02_modeling.ipynb`. They save the model to `model/`.
 
+> The trained model is already included in `page/backend/model/`, so you can skip this step and go straight to the API. If you retrain, copy the files from `model/` to `page/backend/model/`.
+
 > On macOS, XGBoost needs OpenMP: `brew install libomp`.
 
 **2. Start the API** (keep the virtual environment active)
@@ -144,9 +146,10 @@ Run `notebook/01_eda.ipynb` and then `notebook/02_modeling.ipynb`. They save the
 ```bash
 cd page/backend
 pip install -r requirements.txt
-python -m scripts.build_demo_data
 uvicorn app.main:app --reload
 ```
+
+The demo data is already in `page/backend/data/`. To rebuild it from the Kaggle files: `python -m scripts.build_demo_data`.
 
 API docs: http://localhost:8000/docs
 
@@ -160,7 +163,7 @@ npm run dev
 
 Open http://localhost:3000 and log in with a demo account.
 
-**Or with Docker** (after training the model and building the demo data):
+**Or with Docker:**
 
 ```bash
 cd "IEEE-CIS Fraud Detection/page"
@@ -176,9 +179,11 @@ fraud-radar-ml/
 └── IEEE-CIS Fraud Detection/
     ├── dataset/            # raw/ (Kaggle CSVs) and processed/ — not in the repo
     ├── notebook/           # 01_eda.ipynb · 02_modeling.ipynb
-    ├── model/              # trained model, artifacts and metrics — not in the repo
+    ├── model/              # notebook output — not in the repo
     ├── page/
     │   ├── backend/        # FastAPI: scoring, users, reviews, admin
+    │   │   ├── model/      # trained model used by the API (17 MB)
+    │   │   └── data/       # demo transactions from the test period
     │   ├── frontend/       # Next.js platform
     │   └── docker-compose.yml
     └── requirements.txt
@@ -195,7 +200,8 @@ fraud-radar-ml/
 - [x] Backend scoring API
 - [x] Platform with users, roles, dashboard and alert queue
 - [x] English / Spanish interface
-- [ ] Online deployment
+- [ ] Screenshots and demo
+- [ ] Online deployment (Vercel + Render)
 
 ---
 

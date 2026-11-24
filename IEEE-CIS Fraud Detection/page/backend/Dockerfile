@@ -9,10 +9,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 COPY scripts ./scripts
+COPY model ./model
+COPY data ./data
 
-# The model and demo data are mounted by docker-compose
-ENV MODEL_DIR=/model \
-    DATA_DIR=/app/data
-
+ENV PORT=8000
 EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]

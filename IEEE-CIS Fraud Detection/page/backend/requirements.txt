@@ -2,7 +2,7 @@ fastapi>=0.110
 uvicorn[standard]>=0.29
 pydantic[email]>=2.6
 pandas>=2.1
-numpy>=1.26
+numpy>=2.0
 scikit-learn>=1.4
-xgboost>=2.0
+xgboost==3.4.1          # same version used to train the saved model
 joblib>=1.3

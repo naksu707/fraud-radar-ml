@@ -55,6 +55,6 @@ python -m scripts.try_api
 ```
 
 ## Notes
-- The model files are read from `IEEE-CIS Fraud Detection/model/` (override with `MODEL_DIR`).
+- The model files are read from `page/backend/model/` (falls back to `IEEE-CIS Fraud Detection/model/`; override with `MODEL_DIR`).
 - `data/` holds the generated demo data and the SQLite database. Neither is committed: the demo data
   follows the Kaggle competition rules, and the database contains user accounts.
