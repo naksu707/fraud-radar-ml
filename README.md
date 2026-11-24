@@ -12,7 +12,7 @@
 </div>
 
 > [!NOTE]
-> **Status: Work in progress 🚧** · This project is being rebuilt from a previous Machine Learning course project. Sections marked *coming soon* will be updated as each stage is completed.
+> **Status: Work in progress 🚧** · Sections marked *coming soon* will be updated as each stage is completed.
 
 ---
 
@@ -37,7 +37,7 @@ Every online payment has to be approved or blocked in milliseconds. Block too li
 
 🔗 **Download:** [kaggle.com/competitions/ieee-fraud-detection](https://www.kaggle.com/competitions/ieee-fraud-detection/data)
 
-> The data is **not included** in this repository. To use it, join the competition on Kaggle, accept its rules and download the files into `data/raw/`.
+> The data is **not included** in this repository. To use it, join the competition on Kaggle, accept its rules and download `train_transaction.csv` and `train_identity.csv` into `IEEE-CIS Fraud Detection/dataset/raw/`.
 
 ---
 
@@ -96,14 +96,7 @@ Fraud Radar
 
 ## 🚀 Run it locally
 
-```bash
-git clone https://github.com/naksu707/fraud-radar-ml.git
-cd fraud-radar-ml/pagina
-docker compose up --build
-```
-
-- Frontend: `http://localhost:3000`
-- API docs: `http://localhost:8000/docs`
+*Coming soon.*
 
 ---
 
