@@ -222,6 +222,6 @@ Originally developed as the final project for the **Machine Learning** course, M
 
 <div align="center">
 
-Made with 💜 by **[María José Ospina Samboni](https://github.com/naksu707)**
+Made by 💜 **[Maria Jose Ospina](https://github.com/naksu707)** 💜
 
 </div>
