@@ -1,0 +1,26 @@
+# Runs the API and the platform together.
+# Before the first run, generate the demo data once (see backend/README.md):
+#   cd backend && python -m scripts.build_demo_data
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../model:/model:ro
+      - ./backend/data:/app/data          # demo data + SQLite database (users, predictions, reviews)
+    environment:
+      - CORS_ORIGINS=http://localhost:3000
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@fraudradar.dev}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin1234}
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

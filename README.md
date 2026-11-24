@@ -11,16 +11,13 @@
 
 </div>
 
-> [!NOTE]
-> **Status: Work in progress 🚧** · Sections marked *coming soon* will be updated as each stage is completed.
-
 ---
 
 ## 💡 The problem
 
 Every online payment has to be approved or blocked in milliseconds. Block too little and the company loses money to fraud; block too much and legitimate customers get their cards declined.
 
-**Fraud Radar** is an end-to-end prototype of the tool a fraud analyst would use: a machine learning model scores each transaction with a **risk score**, explains **why** it looks suspicious, and sends the riskiest cases to an **alert queue** in a web dashboard.
+**Fraud Radar** is an end-to-end prototype of the tool a fraud analyst would use: a machine learning model scores each transaction with a **risk score**, explains **why** it looks suspicious, and sends the riskiest cases to an **alert queue** in a web platform where analysts review them.
 
 ---
 
@@ -45,11 +42,11 @@ Every online payment has to be approved or blocked in milliseconds. Block too li
 
 | Step | Details |
 |---|---|
-| **Exploratory analysis** | Fraud rate by product, card type, email domain, device and transaction amount |
-| **Feature engineering** | Time features, amount patterns, card/email/device aggregations, missing-value indicators |
+| **Exploratory analysis** | Fraud rate by product, card type, email domain, device, hour and transaction amount; missing values and identity coverage |
+| **Feature engineering** | Amount patterns (log amount, cents, tiny "card testing" amounts), hour and weekday, how common each card, address, email domain and device is, amount vs. the card's usual amount, purchaser/recipient email match |
 | **Models** | Logistic Regression (baseline) · Random Forest · XGBoost |
-| **Class imbalance** | Class weights and threshold tuning instead of plain accuracy |
-| **Validation** | Time-based split: train on earlier transactions, test on later ones |
+| **Class imbalance** | Class weights (`scale_pos_weight`) and a cost-based threshold instead of plain accuracy |
+| **Validation** | Time-based split: 70% train · 15% validation · 15% untouched test |
 | **Explainability** | SHAP values to show the main reasons behind each alert |
 
 ### Why not accuracy?
@@ -62,53 +59,141 @@ Only ≈ 3.5% of transactions are fraud, so a model that says "not fraud" every 
 
 ### ⚠️ Avoiding data leakage
 - **Time-based split:** a random split would let the model "see the future", inflating results.
-- **Same card in train and test:** transactions from the same card can appear in both sets, so results are also checked by grouping cards.
+- **Learned on train only:** frequencies and card averages are computed on the training period and then applied to validation and test.
+- **No card memorization:** the raw card ID is removed, and results are also checked on cards never seen during training.
 - **Features only available at payment time:** nothing that is known only after the transaction is reviewed.
 
 ### Results
-*Coming soon.*
+
+| Model (validation) | PR-AUC | ROC-AUC |
+|---|---|---|
+| **XGBoost** | **0.613** | **0.917** |
+| Random Forest | 0.454 | 0.870 |
+| Logistic Regression (baseline) | 0.166 | 0.760 |
+| Random (reference) | 0.034 | 0.500 |
+
+**Final evaluation on the untouched test period (XGBoost, threshold 0.06):**
+
+| Metric | Value |
+|---|---|
+| PR-AUC | 0.534 (random ≈ 0.035) |
+| ROC-AUC | 0.897 |
+| Fraud caught (recall) | 72.9% |
+| Alerts that are real fraud (precision) | 20.7% |
+| Fraud captured in the top 5% riskiest transactions | 57.5% |
+| Cost reduction vs. no model (validation) | 59.1% |
+
+> Scores are **risk scores**, not calibrated probabilities. The threshold was chosen on validation to minimize total cost, assuming each missed fraud costs its amount and each false alarm costs $10 to review.
 
 ---
 
-## 🖥️ Web application
+## 🖥️ Web platform
 
 ```text
 Fraud Radar
 │
-├── Frontend      → Next.js · React · TypeScript · Tailwind CSS · shadcn/ui · Recharts
-├── Backend       → FastAPI · Python · Pandas · scikit-learn · Joblib
-├── Model         → Trained pipeline (.joblib) + SHAP explainer
+├── Frontend      → Next.js · React · TypeScript · CSS · hand-built SVG charts
+├── Backend       → FastAPI · Python · pandas · XGBoost · SQLite
+├── Model         → Trained XGBoost model (.joblib) + SHAP contributions
 └── Deployment    → Docker · Docker Compose
 ```
 
 | Module | What it does |
 |---|---|
-| **Dashboard** | Fraud KPIs: fraud rate, amount at risk, alerts by product, card type and hour |
-| **Alert queue** | Highest-risk transactions, sorted by score, with their top reasons |
-| **Evaluate transaction** | Form to score a new transaction and see its explanation |
-| **Transactions** | Searchable table of scored transactions |
-| **Roles** | Analyst and administrator access |
-| **Assistant** | Chat widget to answer questions about the dashboard |
+| **Home & Project** | Public landing page and an explanation of the data, model and limitations |
+| **Accounts & roles** | Register / log in with hashed passwords and signed tokens. **Analyst** and **Administrator** roles |
+| **Dashboard** | Fraud KPIs, highest-risk transactions, alerts by hour, score distribution and fraud rate by product, card type and device |
+| **Alert queue** | Transactions sorted by risk score with their top reasons. Analysts mark each alert as *confirmed fraud*, *legitimate* or *escalated*, with a note |
+| **Evaluate** | Score a new transaction, or open a real alert and change its amount, email or device to see how the risk moves (what-if) |
+| **History** | Every prediction an analyst makes is saved |
+| **Admin** | Manage users (role, active/inactive), see all predictions and the team's activity log |
+| **Language** | English / Spanish switch |
 
-*Screenshots coming soon.*
+**Demo accounts** (created automatically when the API starts):
+
+| Role | Email | Password |
+|---|---|---|
+| Administrator | `admin@fraudradar.dev` | `admin1234` |
+| Fraud analyst | `analyst@fraudradar.dev` | `analyst1234` |
+
+> Change these passwords and set `SECRET_KEY` before deploying anywhere public.
 
 ---
 
 ## 🚀 Run it locally
 
-*Coming soon.*
+**Requirements:** Python 3.11+, Node.js 20+ and the Kaggle data in `IEEE-CIS Fraud Detection/dataset/raw/`.
+
+**1. Train the model**
+
+```bash
+cd "IEEE-CIS Fraud Detection"
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Run `notebook/01_eda.ipynb` and then `notebook/02_modeling.ipynb`. They save the model to `model/`.
+
+> On macOS, XGBoost needs OpenMP: `brew install libomp`.
+
+**2. Start the API** (keep the virtual environment active)
+
+```bash
+cd page/backend
+pip install -r requirements.txt
+python -m scripts.build_demo_data
+uvicorn app.main:app --reload
+```
+
+API docs: http://localhost:8000/docs
+
+**3. Start the platform** (in a second terminal)
+
+```bash
+cd "IEEE-CIS Fraud Detection/page/frontend"
+npm install
+npm run dev
+```
+
+Open http://localhost:3000 and log in with a demo account.
+
+**Or with Docker** (after training the model and building the demo data):
+
+```bash
+cd "IEEE-CIS Fraud Detection/page"
+docker compose up --build
+```
+
+---
+
+## 📁 Project structure
+
+```text
+fraud-radar-ml/
+└── IEEE-CIS Fraud Detection/
+    ├── dataset/            # raw/ (Kaggle CSVs) and processed/ — not in the repo
+    ├── notebook/           # 01_eda.ipynb · 02_modeling.ipynb
+    ├── model/              # trained model, artifacts and metrics — not in the repo
+    ├── page/
+    │   ├── backend/        # FastAPI: scoring, users, reviews, admin
+    │   ├── frontend/       # Next.js platform
+    │   └── docker-compose.yml
+    └── requirements.txt
+```
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] Exploratory data analysis notebook
-- [ ] Feature engineering and leakage-safe validation
-- [ ] Model comparison and threshold tuning
-- [ ] SHAP explanations
-- [ ] Backend `/score` endpoint
-- [ ] Dashboard and alert queue
-- [ ] Screenshots and demo
+- [x] Exploratory data analysis notebook
+- [x] Feature engineering and leakage-safe validation
+- [x] Model comparison and threshold tuning
+- [x] SHAP explanations
+- [x] Backend scoring API
+- [x] Platform with users, roles, dashboard and alert queue
+- [x] English / Spanish interface
+- [ ] Online deployment
 
 ---
 

@@ -1,0 +1,52 @@
+{
+  "validation": {
+    "XGBoost": {
+      "PR-AUC": 0.6135,
+      "ROC-AUC": 0.9174
+    },
+    "Random Forest": {
+      "PR-AUC": 0.4541,
+      "ROC-AUC": 0.87
+    },
+    "Logistic Regression": {
+      "PR-AUC": 0.1662,
+      "ROC-AUC": 0.7598
+    },
+    "Random (reference)": {
+      "PR-AUC": 0.0343,
+      "ROC-AUC": 0.5
+    }
+  },
+  "test": {
+    "model": "XGBoost",
+    "threshold": 0.06,
+    "test_transactions": 88581,
+    "test_fraud_rate": 0.03480430340592226,
+    "pr_auc": 0.5341499642310886,
+    "roc_auc": 0.8971129817681402,
+    "recall": 0.7285111903989621,
+    "precision": 0.20687114304135581,
+    "fraud_amount_caught": 0.7292177677154541,
+    "alerts_per_1000": 122.56578724557185,
+    "review_cost_assumption_usd": 10.0,
+    "fraud_captured_top_1pct": 0.25656827765163803,
+    "fraud_captured_top_5pct": 0.5750891988323062,
+    "fraud_captured_top_10pct": 0.6931560168666883,
+    "unseen_cards": [
+      {
+        "group": "Cards seen in train",
+        "transactions": 87371,
+        "frauds": 3037,
+        "PR-AUC": 0.5320705307657567,
+        "recall": 0.7276918011195258
+      },
+      {
+        "group": "New cards",
+        "transactions": 1210,
+        "frauds": 46,
+        "PR-AUC": 0.6959682999435176,
+        "recall": 0.782608695652174
+      }
+    ]
+  }
+}
