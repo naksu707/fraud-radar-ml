@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🫆Fraud Radar
+# Fraud Radar
 ### Fraud detection on real e-commerce payment transactions
 
 <p>
