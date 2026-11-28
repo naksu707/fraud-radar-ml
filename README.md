@@ -3,10 +3,10 @@
 # Fraud Radar
 ### Fraud detection on real e-commerce payment transactions
 
-<p>
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" /> <img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" /> <img src="https://img.shields.io/badge/XGBoost-1F6FEB?style=for-the-badge&logoColor=white" /> <img src="https://img.shields.io/badge/SHAP-FF4B4B?style=for-the-badge&logoColor=white" />
+<p align="center">
+<img src="https://img.shields.io/badge/Python-F9B7D6?style=for-the-badge&logo=python&logoColor=5B4688" /> <img src="https://img.shields.io/badge/scikit--learn-D4B8F5?style=for-the-badge&logo=scikitlearn&logoColor=5B4688" /> <img src="https://img.shields.io/badge/XGBoost-B8A4E3?style=for-the-badge" /> <img src="https://img.shields.io/badge/SHAP-ADBEF7?style=for-the-badge" />
 <br>
-<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" /> <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" /> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+<img src="https://img.shields.io/badge/FastAPI-A8DDF0?style=for-the-badge&logo=fastapi&logoColor=5B4688" /> <img src="https://img.shields.io/badge/Next.js-FBE3A9?style=for-the-badge&logo=nextdotjs&logoColor=5B4688" /> <img src="https://img.shields.io/badge/TypeScript-F9C6B6?style=for-the-badge&logo=typescript&logoColor=5B4688" /> <img src="https://img.shields.io/badge/Docker-F9B7D6?style=for-the-badge&logo=docker&logoColor=5B4688" />
 </p>
 
 </div>
